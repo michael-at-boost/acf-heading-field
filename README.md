@@ -9,6 +9,10 @@ A simple text entry field with selector for HTML heading level for ACF.
 
 Allows frontend users to make SEO decisions about heading levels.
 
+## Interface Settings
+
+Available options buttons or select (see screenshots above).
+
 ## Output / Return
 
 Returns plain data or markup with optional CSS class.
