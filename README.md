@@ -1,9 +1,10 @@
 # acf-heading-field
 
-A simple text entry field with selector for HTML heading level for ACF.
+A simple text entry field with selector for HTML heading level for ACF.  
 
-![ScreenShot](screenshots/acf-heading-field-buttons.png)
-![ScreenShot](screenshots/acf-heading-field-dropdown.png)
+![ScreenShot](screenshots/acf-heading-field-buttons.png)  
+
+![ScreenShot](screenshots/acf-heading-field-dropdown.png)  
 
 Allows frontend users to make SEO decisions about heading levels.
 
@@ -31,7 +32,7 @@ Returns data in an array.
 ]
 ```
 
-NOTE: no class data - CSS class optional is conditional on using the Markup return.
+NOTE: no class data - CSS class optional is conditional on using the Markup return.  
 If you're grabbing the data you can handle classes yourself in code.
 
 ## Installation
