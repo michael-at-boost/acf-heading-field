@@ -3,7 +3,7 @@
 	Plugin Name: Advanced Custom Fields: Heading Field
 	Plugin URI: https://github.com/digitalbeast-co-uk/acf-heading-field
 	Description: A simple text field and heading level selector.
-	Version: 0.0.1
+	Version: 0.9.1
 	Author: Digital Beast
 	Author URI: https://github.com/digitalbeast-co-uk
 	License: GPLv2 or later

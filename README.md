@@ -57,3 +57,8 @@ This add-on can be treated as both a WP plugin and a theme include.
 ```php
 include_once('acf-heading-field/acf-heading-field.php');
 ```
+
+## v0.9.1
+Release candidate for v1.  
+Seems to be working fine but hasn't been battle tested.  
+Thanks for submitting any issues that you come across.
