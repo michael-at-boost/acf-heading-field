@@ -1,11 +1,11 @@
 <?php
 /*
 	Plugin Name: Advanced Custom Fields: Heading Field
-	Plugin URI: https://oxwebdev.com
-	Description: A simple text field that includes a selection for heading type (h1, h2... h6)
+	Plugin URI: https://github.com/digitalbeast-co-uk/acf-heading-field
+	Description: A simple text field and heading level selector.
 	Version: 0.0.1
-	Author: OxWebDev
-	Author URI: https://oxwebdev.com
+	Author: Digital Beast
+	Author URI: https://github.com/digitalbeast-co-uk
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
