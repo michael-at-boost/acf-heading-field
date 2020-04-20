@@ -19,7 +19,7 @@ Returns plain data or markup with optional CSS class.
 
 ### Markup
 
-Returns a single HTML element with optional css class. 
+Returns a single HTML element with optional CSS class. 
 ```html
 <h1>your text</h1>
 ```
