@@ -62,3 +62,8 @@ include_once('acf-heading-field/acf-heading-field.php');
 Release candidate for v1.  
 Seems to be working fine but hasn't been battle tested.  
 Thanks for submitting any issues that you come across.
+
+## TODO
+integrate the picker dropdown into the textbox so it can function as a regular text input with subtle heading options
+then it can be used for every single text input in the site 
+and look more streamlined.

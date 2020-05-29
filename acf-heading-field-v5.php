@@ -455,6 +455,11 @@ class acf_field_heading_field extends acf_field {
 
 	function format_value( $value, $post_id, $field ) {
 
+		// if no text then return blank string (no tags)
+		if (!$value['text']) {
+			return "";
+		}
+
 		// always return a level so as not to break html
 		if( !isset($value['level']) || empty($value['level']) ) {
 			$value['level'] = "h1";
