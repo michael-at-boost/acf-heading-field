@@ -47,13 +47,26 @@ Returns data in an array.
 ]
 ```
 
-## v1.0.0
+## Usage
+
+Recommended usage is to select the Data return type and use the get_heading() helper function included with this plugin.
+
+```php
+<?php echo get_heading(get_field("title"), "text-center")?>
+```
+
+The signature is `get_heading( <data array>, <css classes> );`  
+This is the cleanest way to keep your classes in your php file at the site of use. Which makes maintenance easier over time.
+
+## Changelog
+
+### v1.0.0
 
 Added default values.  
 Initially the default tag is <p>  
 This can be overwritten theme-wide and per field.
 
-## v0.9.1
+### v0.9.1
 
 Release candidate for v1.  
 Seems to be working fine but hasn't been battle tested.  
