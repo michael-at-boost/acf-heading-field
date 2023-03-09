@@ -2,19 +2,25 @@
 
 A lean text entry field with selector for HTML heading level for ACF.
 
-![ScreenShot](screenshots/acf-heading-field-buttons.png)
+![ScreenShot](assets/screenshot-1.png)
 
-![ScreenShot](screenshots/acf-heading-field-dropdown.png)
+![ScreenShot](assets/screenshot-2.png)
 
-Allows frontend users to make SEO decisions about heading levels.
+![ScreenShot](assets/screenshot-3.png)
 
-## Interface Settings
+Any text that might have SEO value can be given the correct header value from WP Admin.  
+Decouple SEO updates from code changes.
 
-Available options buttons or select (see screenshots above).
+## Configuration
 
-## Output / Return
+Per field:
 
-Returns plain data or markup with optional CSS class.
+- Button group or select UI
+- Default element
+- Return HTML (markup) or data array
+- (Optional) CSS class to include with HTML markup return
+
+(see screenshots above).
 
 ### Markup
 
@@ -41,31 +47,10 @@ Returns data in an array.
 ]
 ```
 
-NOTE: no class data - CSS class optional is conditional on using the Markup return.  
-If you're grabbing the data you can handle classes yourself in code.
-
-## Installation
-
-This add-on can be treated as both a WP plugin and a theme include.
-
-**Install as Plugin**
-
-1. Copy the 'acf-heading-field' folder into your plugins folder.
-2. Activate the plugin via the Plugins admin page.
-
-**Include within theme**
-
-1.  Copy the 'acf-heading-field' folder into your theme folder (can use sub folders).
-2.  Edit your functions.php file and add the code below (Make sure the path is correct to include the acf-heading-field.php file).
-
-```php
-include_once('acf-heading-field/acf-heading-field.php');
-```
-
 ## v1.0.0
 
-Added default values.
-Initially the default tag is <p>
+Added default values.  
+Initially the default tag is <p>  
 This can be overwritten theme-wide and per field.
 
 ## v0.9.1

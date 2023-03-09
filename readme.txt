@@ -15,10 +15,6 @@ A lean text entry field with selector for HTML heading level for ACF.
 Any text that might have SEO value can be given the correct header value from WP Admin.
 Decouple SEO updates from code changes.
 
-![ScreenShot](screenshots/acf-heading-field-buttons.png)  
-
-![ScreenShot](screenshots/acf-heading-field-dropdown.png)  
-
 Allow frontend users to make SEO decisions about heading levels.
 
 == Configuration ==
@@ -29,7 +25,7 @@ Per field:
 * Return HTML (markup) or data array
 * (Optional) CSS class to include with HTML markup return
 
-(see screenshots above).
+(see screenshots below).
 
 
 == Markup ==
