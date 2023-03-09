@@ -96,7 +96,7 @@ class acf_field_heading_field extends acf_field {
 
 
 		acf_render_field_setting( $field, array(
-      'label'			=> __('Heading selector interface'),
+      'label'			=> __('Heading Selector Interface'),
 			'instructions'	=> 'Show a dropdown or a list of buttons?',
 			'name'			=> 'heading-field-select',
 			'type'			=> 'radio',
@@ -108,16 +108,25 @@ class acf_field_heading_field extends acf_field {
 		), true);
 
 		acf_render_field_setting( $field, array(
-      'label'			=> __('Return type'),
+			'label'			=> __('Default Heading Level'),
+			'instructions'	=> 'Blank = <p></p>',
+			'name'			=> 'heading-default-level',
+			'type'			=> 'text',
+		
+		), true);
+
+		acf_render_field_setting( $field, array(
+      'label'			=> __('Return Type'),
 			'instructions'	=> 'Return data or markup?',
 			'name'			=> 'heading-return-type',
 			'type'			=> 'radio',
       'layout'        => 'horizontal',
 			'choices'       => array(
-				'markup' => __('Markup'),
-			  'data' => __('Data')
+			  'data' => __('Data'),
+				'markup' => __('Markup')
 			)
 		), true);
+
 
 		acf_render_field_setting($field, [
 		    'label'        => __('CSS Class'),
@@ -159,63 +168,60 @@ class acf_field_heading_field extends acf_field {
 
 		/* overwrite fields with empty values to avoid warning */
 		$field['value']['text'] = isset($field['value']['text']) ? $field['value']['text'] : null;
-		$field['value']['level'] = isset($field['value']['level']) ? $field['value']['level'] : null;
+		$field['value']['level'] = isset($field['value']['level']) ? $field['value']['level'] : $this->merge_default_level($field, $field["value"]);
 		$field['heading-field-select'] = isset($field['heading-field-select']) ? $field['heading-field-select'] : null;
 
 		?>
 
-			<div class="acf-heading-field-wrap">
-				<div class="acf-heading-field-text">
-					<input type="text" value="<?php echo esc_attr( $field['value']['text'] ); ?>" name="<?php echo $field_name; ?>[text]" class="text" />
-				</div>
-				<div class="acf-heading-field-level">
-					<?php if ($field['heading-field-select'] !== "dropdown"): ?>
+<div class="acf-heading-field-wrap">
+  <div class="acf-heading-field-text">
+    <input type="text" value="<?php echo esc_attr( $field['value']['text'] ); ?>"
+      name="<?php echo $field_name; ?>[text]" class="text" />
+  </div>
+  <div class="acf-heading-field-level">
+    <?php if ($field['heading-field-select'] !== "dropdown"): ?>
 
-						<div class="acf-heading-field-level__buttons">
-							<?php for ($i = 1; $i < 7; $i++) : ?>
-								<div class="acf-heading-field-level__button-container">
-									<label for="<?php echo $field['key'] ?>-h<?php echo $i ?>">H<?php echo $i ?>
-									</label>
-									<input type="radio" 
-									       value="h<?php echo $i ?>" 
-									       id="<?php echo $field['key'] ?>-h<?php echo $i ?>" 
-									       name="<?php echo $field_name; ?>[level]" 
-									       <?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 1)) echo "checked" ?> />
-								</div>
-							<?php endfor; ?>
+    <div class="acf-heading-field-level__buttons">
+      <?php for ($i = 1; $i < 7; $i++) : ?>
+      <div class="acf-heading-field-level__button-container">
+        <label for="<?php echo $field['key'] ?>-h<?php echo $i ?>">H<?php echo $i ?>
+        </label>
+        <input type="radio" value="h<?php echo $i ?>" id="<?php echo $field['key'] ?>-h<?php echo $i ?>"
+          name="<?php echo $field_name; ?>[level]"
+          <?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 1)) echo "checked" ?> />
+      </div>
+      <?php endfor; ?>
 
-							<div class="acf-heading-field-level__button-container">
-								<label for="<?php echo $field['key'] ?>-p">
-									None (P)
-								</label>
-									<input type="radio" 
-												 value="p" id="<?php echo $field['key'] ?>-p" 
-												 name="<?php echo $field_name; ?>[level]"
-												 <?php if ($field['value']['level'] == "p") echo "checked" ?> />
-							</div>
-						</div>
-						
-					<?php else: ?>
-							
-						<div class="acf-heading-field-level__select">
-							<select name="<?php echo $field_name; ?>[level]">
-								<?php for ($i = 1; $i < 7; $i++) : ?>
-									<option value="h<?php echo $i ?>" 
-												<?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 1)) echo "selected" ?>>
-										H<?php echo $i ?>
-									</option>
-								<?php endfor; ?>
-								<option value="p" <?php if ($field['value']['level'] == "p") echo "selected" ?>>
-									None (P)
-								</option>
-							</select>
-						</div>
+      <div class="acf-heading-field-level__button-container">
+        <label for="<?php echo $field['key'] ?>-p">
+          None (P)
+        </label>
+        <input type="radio" value="p" id="<?php echo $field['key'] ?>-p" name="<?php echo $field_name; ?>[level]"
+          <?php if ($field['value']['level'] == "p") echo "checked" ?> />
+      </div>
+    </div>
 
-					<?php endif; ?>
-				</div>
-			</div>
+    <?php else: ?>
 
-		<?php
+    <div class="acf-heading-field-level__select">
+      <select name="<?php echo $field_name; ?>[level]">
+        <?php for ($i = 1; $i < 7; $i++) : ?>
+        <option value="h<?php echo $i ?>"
+          <?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 2)) echo "selected" ?>>
+          H<?php echo $i ?>
+        </option>
+        <?php endfor; ?>
+        <option value="p" <?php if ($field['value']['level'] == "p") echo "selected" ?>>
+          None (P)
+        </option>
+      </select>
+    </div>
+
+    <?php endif; ?>
+  </div>
+</div>
+
+<?php
 
 	}
 
@@ -436,6 +442,23 @@ class acf_field_heading_field extends acf_field {
 	*/
 
 
+	function merge_default_level($field, $value) {
+		// always return a level so as not to break html
+		if( !isset($value['level']) || empty($value['level']) ) {
+			// global default
+			$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
+			
+			// field default
+			if (isset($field["heading-default-level"])) {
+				$default_level =  $field["heading-default-level"];
+			}
+			
+			return $default_level;
+		}
+
+		return $value['level'];
+	}
+
 	/*
 	*  format_value()
 	*
@@ -460,10 +483,19 @@ class acf_field_heading_field extends acf_field {
 			return "";
 		}
 
-		// always return a level so as not to break html
-		if( !isset($value['level']) || empty($value['level']) ) {
-			$value['level'] = "h1";
-		}
+		// // always return a level so as not to break html
+		// if( !isset($value['level']) || empty($value['level']) ) {
+		// 	// global default
+		// 	$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
+			
+		// 	// field default
+		// 	if (isset($field["heading-default-level"])) {
+		// 		$default_level =  $field["heading-default-level"];
+		// 	}
+			
+		// 	$value['level'] = $default_level;
+		// }
+		$value['level'] = $this->merge_default_level($field, $value);
 
 		// option to dump the data out
 		if ($field['heading-return-type'] == "data") {
@@ -627,6 +659,33 @@ class acf_field_heading_field extends acf_field {
 
 }
 
+if ( ! function_exists( 'get_heading' ) ) {
+    function get_heading($field, $cls="") {
+    	if (!$field) return "";
+    	$str = "<{$field['level']}";
+    	if ($cls) {
+    		$str .= " class='{$cls}'";
+    	}
+    	$str .= ">";
+    	$str .= $field['text'];
+    	$str .= "</{$field['level']}>";
+    	return $str;
+    }
+}
+
+// if ( ! function_exists( 'get_subfield_heading' ) ) {
+//     function get_subfield_heading($name, $cls="") {
+//     	$data = get_sub_field($name);
+//     	$str = "<{$data['level']}";
+//     	if ($cls) {
+//     		$str .= " class='{$cls}'";
+//     	}
+//     	$str .= ">";
+//     	$str .= $data['text'];
+//     	$str .= "</{$data['level']}>";
+//     	return $str;
+//     }
+// }
 
 // create field
 new acf_field_heading_field();

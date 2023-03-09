@@ -1,11 +1,11 @@
 <?php
 /*
 	Plugin Name: Advanced Custom Fields: Heading Field
-	Plugin URI: https://github.com/digitalbeast-co-uk/acf-heading-field
+	Plugin URI: https://github.com/Basicbydesign/acf-heading-field
 	Description: A simple text field and heading level selector.
-	Version: 0.9.1
-	Author: Digital Beast
-	Author URI: https://github.com/digitalbeast-co-uk
+	Version: 1.0.0
+	Author: Basic By Design
+	Author URI: https://github.com/Basicbydesign
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -20,4 +20,3 @@ function include_field_types_heading_field( $version ) {
 }
 
 add_action('acf/include_field_types', 'include_field_types_heading_field');
-

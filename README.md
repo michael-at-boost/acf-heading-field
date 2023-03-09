@@ -1,11 +1,10 @@
 # acf-heading-field
 
-A lean text entry field with selector for HTML heading level for ACF.  
+A lean text entry field with selector for HTML heading level for ACF.
 
-![ScreenShot](screenshots/acf-heading-field-buttons.png)  
+![ScreenShot](screenshots/acf-heading-field-buttons.png)
 
-![ScreenShot](screenshots/acf-heading-field-dropdown.png)  
-
+![ScreenShot](screenshots/acf-heading-field-dropdown.png)
 
 Allows frontend users to make SEO decisions about heading levels.
 
@@ -19,19 +18,24 @@ Returns plain data or markup with optional CSS class.
 
 ### Markup
 
-Returns a single HTML element with optional CSS class. 
+Returns a single HTML element with optional CSS class.
+
 ```html
 <h1>your text</h1>
 ```
+
 ```html
-<h1 class='your-class'>your text</h1>
+<h1 class="your-class">your text</h1>
 ```
+
 (where h1 is the selected heading level.)
 
 ### Data
+
 Returns data in an array.
+
 ```php
-[ 
+[
   'text' => 'your text',
   'level' => 'h1'
 ]
@@ -58,12 +62,14 @@ This add-on can be treated as both a WP plugin and a theme include.
 include_once('acf-heading-field/acf-heading-field.php');
 ```
 
+## v1.0.0
+
+Added default values.
+Initially the default tag is <p>
+This can be overwritten theme-wide and per field.
+
 ## v0.9.1
+
 Release candidate for v1.  
 Seems to be working fine but hasn't been battle tested.  
 Thanks for submitting any issues that you come across.
-
-## TODO
-integrate the picker dropdown into the textbox so it can function as a regular text input with subtle heading options
-then it can be used for every single text input in the site 
-and look more streamlined.
