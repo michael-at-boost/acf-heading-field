@@ -52,7 +52,7 @@ Returns data in an array.
 Recommended usage is to select the Data return type and use the get_heading() helper function included with this plugin.
 
 ```php
-<?php echo get_heading(get_field("title"), "text-center")?>
+<?php echo get_heading(get_field("title"), "text-center"); ?>
 ```
 
 The signature is `get_heading( <data array>, <css classes> );`  
