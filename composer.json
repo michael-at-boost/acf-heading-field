@@ -1,0 +1,11 @@
+{
+    "name": "boost-dev/acf-heading-field",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Michael James",
+            "email": "michael@boostmetrica.com"
+        }
+    ],
+    "require": {}
+}
