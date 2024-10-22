@@ -1,10 +1,7 @@
 .acf-heading-field-wrap {
-  display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-left: -10px;
   margin-right: -10px;
@@ -15,21 +12,18 @@
 }
 
 .acf-heading-field-text {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 
 .acf-heading-field-level {
   margin-left: 0;
-  display: -webkit-flex;
+  margin-right: 0;
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
+  position: absolute;
+  right: 0;
 }
 
 .acf-heading-field-level__label {
@@ -38,14 +32,17 @@
 }
 
 .acf-heading-field-level select {
-  min-width: 100px;
+  width: 54px;
+  opacity: 0.4;
 }
 
+.acf-heading-field-level select:focus {
+  opacity: 1;
+}
 
 .acf-heading-field-level__button-container {
   display: inline-block;
 }
-
 
 .acf-heading-field-level__buttons--active label {
   border: 1px solid #ccc;
@@ -55,32 +52,5 @@
 
 label.acf-heading-field-level--checked {
   background-color: #016087;
-  color: #FFF;
-}
-
-@media only screen and (max-width: 1100px) {
-  .acf-heading-field-wrap {
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    -o-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin: 0;
-  } 
-  
-  .acf-heading-field-wrap > * {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 100%;
-        -ms-flex: 0 0 100%;
-            flex: 0 0 100%;
-    margin: 0;
-    max-width: 100%;
-  }
-
-  .acf-heading-field-text {
-    margin-bottom: 10px;
-  }
-
-  .acf-heading-field-level select {
-    line-height: 35px; /* fixes weird style from wp core */
-  }
+  color: #fff;
 }

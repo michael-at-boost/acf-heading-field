@@ -96,51 +96,12 @@ class acf_field_heading_field extends acf_field {
 
 
 		acf_render_field_setting( $field, array(
-      'label'			=> __('Heading Selector Interface'),
-			'instructions'	=> 'Show a dropdown or a list of buttons?',
-			'name'			=> 'heading-field-select',
-			'type'			=> 'radio',
-      'layout'        => 'horizontal',
-			'choices'       => array(
-				'dropdown' => __('Dropdown'),
-			  'buttons' => __('Buttons')
-			)
-		), true);
-
-		acf_render_field_setting( $field, array(
 			'label'			=> __('Default Heading Level'),
-			'instructions'	=> 'Blank = <p></p>',
+			'instructions'	=> 'Blank = &lt;p>',
 			'name'			=> 'heading-default-level',
 			'type'			=> 'text',
-		
+
 		), true);
-
-		acf_render_field_setting( $field, array(
-      'label'			=> __('Return Type'),
-			'instructions'	=> 'Return data or markup?',
-			'name'			=> 'heading-return-type',
-			'type'			=> 'radio',
-      'layout'        => 'horizontal',
-			'choices'       => array(
-			  'data' => __('Data'),
-				'markup' => __('Markup')
-			)
-		), true);
-
-
-		acf_render_field_setting($field, [
-		    'label'        => __('CSS Class'),
-		    'instructions' => 'Optional CSS class to apply to heading element',
-		    'type'         => 'text',
-		    'name'         => 'heading-css-class',
-		    // Here's the magic
-		    'conditions'   => [
-		        'field'    => 'heading-return-type',
-		        'operator' => '==',
-		        'value'    => 'markup'
-		    ]
-		]);
-
 	}
 
 
@@ -179,45 +140,21 @@ class acf_field_heading_field extends acf_field {
       name="<?php echo $field_name; ?>[text]" class="text" />
   </div>
   <div class="acf-heading-field-level">
-    <?php if ($field['heading-field-select'] !== "dropdown"): ?>
 
-    <div class="acf-heading-field-level__buttons">
-      <?php for ($i = 1; $i < 7; $i++) : ?>
-      <div class="acf-heading-field-level__button-container">
-        <label for="<?php echo $field['key'] ?>-h<?php echo $i ?>">H<?php echo $i ?>
-        </label>
-        <input type="radio" value="h<?php echo $i ?>" id="<?php echo $field['key'] ?>-h<?php echo $i ?>"
-          name="<?php echo $field_name; ?>[level]"
-          <?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 1)) echo "checked" ?> />
-      </div>
-      <?php endfor; ?>
-
-      <div class="acf-heading-field-level__button-container">
-        <label for="<?php echo $field['key'] ?>-p">
-          None (P)
-        </label>
-        <input type="radio" value="p" id="<?php echo $field['key'] ?>-p" name="<?php echo $field_name; ?>[level]"
-          <?php if ($field['value']['level'] == "p") echo "checked" ?> />
-      </div>
-    </div>
-
-    <?php else: ?>
 
     <div class="acf-heading-field-level__select">
       <select name="<?php echo $field_name; ?>[level]">
         <?php for ($i = 1; $i < 7; $i++) : ?>
-        <option value="h<?php echo $i ?>"
-          <?php if ($field['value']['level'] == "h" . $i || (!$field['value']['level'] && $i == 2)) echo "selected" ?>>
+        <option value="h<?php echo $i ?>" <?php if ($field['value']['level'] == "h" . $i) echo "selected" ?>>
           H<?php echo $i ?>
         </option>
         <?php endfor; ?>
-        <option value="p" <?php if ($field['value']['level'] == "p") echo "selected" ?>>
-          None (P)
+        <option value="p" <?php if ($field['value']['level'] == "p" || (!$field['value']['level'])) echo "selected" ?>>
+          P
         </option>
       </select>
     </div>
 
-    <?php endif; ?>
   </div>
 </div>
 
@@ -398,7 +335,7 @@ class acf_field_heading_field extends acf_field {
 	*  @return	$value
 	*/
 
-	
+
 
 	function load_value( $value, $post_id, $field ) {
 
@@ -413,7 +350,7 @@ class acf_field_heading_field extends acf_field {
 
 	}
 
-	
+
 
 
 	/*
@@ -447,12 +384,12 @@ class acf_field_heading_field extends acf_field {
 		if( !isset($value['level']) || empty($value['level']) ) {
 			// global default
 			$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
-			
+
 			// field default
 			if (isset($field["heading-default-level"])) {
 				$default_level =  $field["heading-default-level"];
 			}
-			
+
 			return $default_level;
 		}
 
@@ -487,12 +424,12 @@ class acf_field_heading_field extends acf_field {
 		// if( !isset($value['level']) || empty($value['level']) ) {
 		// 	// global default
 		// 	$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
-			
+
 		// 	// field default
 		// 	if (isset($field["heading-default-level"])) {
 		// 		$default_level =  $field["heading-default-level"];
 		// 	}
-			
+
 		// 	$value['level'] = $default_level;
 		// }
 		$value['level'] = $this->merge_default_level($field, $value);
@@ -500,7 +437,7 @@ class acf_field_heading_field extends acf_field {
 		// option to dump the data out
 		if ($field['heading-return-type'] == "data") {
 			return $value;
-		} 
+		}
 
 		// if class is set better insert that too
 		$css_class = "";
