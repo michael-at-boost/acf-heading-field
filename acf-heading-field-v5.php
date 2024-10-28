@@ -353,30 +353,6 @@ class acf_field_heading_field extends acf_field {
 
 
 
-	/*
-	*  update_value()
-	*
-	*  This filter is applied to the $value before it is saved in the db
-	*
-	*  @type	filter
-	*  @since	3.6
-	*  @date	23/01/13
-	*
-	*  @param	$value (mixed) the value found in the database
-	*  @param	$post_id (mixed) the $post_id from which the value was loaded
-	*  @param	$field (array) the field array holding all the field options
-	*  @return	$value
-	*/
-
-	/*
-
-	function update_value( $value, $post_id, $field ) {
-
-		return $value;
-
-	}
-
-	*/
 
 
 	function merge_default_level($field, $value) {
@@ -420,189 +396,43 @@ class acf_field_heading_field extends acf_field {
 			return "";
 		}
 
-		// // always return a level so as not to break html
-		// if( !isset($value['level']) || empty($value['level']) ) {
-		// 	// global default
-		// 	$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
-
-		// 	// field default
-		// 	if (isset($field["heading-default-level"])) {
-		// 		$default_level =  $field["heading-default-level"];
-		// 	}
-
-		// 	$value['level'] = $default_level;
-		// }
 		$value['level'] = $this->merge_default_level($field, $value);
 
-		// option to dump the data out
-		if ($field['heading-return-type'] == "data") {
-			return $value;
-		}
+    return $value;
 
-		// if class is set better insert that too
-		$css_class = "";
-		if (isset($field['heading-css-class']) && $field['heading-css-class']) {
-			$css_class = " class='{$field['heading-css-class']}' ";
-		}
-
-		return "<" . $value['level'] . " " . $css_class . ">" .
-		$value['text'] .
-		"</" . $value['level'] . ">";
-
-	}
-
-
-	/*
-	*  validate_value()
-	*
-	*  This filter is used to perform validation on the value prior to saving.
-	*  All values are validated regardless of the field's required setting. This allows you to validate and return
-	*  messages to the user if the value is not correct
-	*
-	*  @type	filter
-	*  @date	11/02/2014
-	*  @since	5.0.0
-	*
-	*  @param	$valid (boolean) validation status based on the value and the field's required setting
-	*  @param	$value (mixed) the $_POST value
-	*  @param	$field (array) the field array holding all the field options
-	*  @param	$input (string) the corresponding input name for $_POST value
-	*  @return	$valid
-	*/
-
-	/*
-
-	function validate_value( $valid, $value, $field, $input ){
-
-		// Basic usage
-		if( $value < $field['custom_minimum_setting'] )
-		{
-			$valid = false;
-		}
-
-
-		// Advanced usage
-		if( $value < $field['custom_minimum_setting'] )
-		{
-			$valid = __('The value is too little!','acf-FIELD_NAME'),
-		}
-
-
-		// return
-		return $valid;
-
-	}
-
-	*/
-
-
-	/*
-	*  delete_value()
-	*
-	*  This action is fired after a value has been deleted from the db.
-	*  Please note that saving a blank value is treated as an update, not a delete
-	*
-	*  @type	action
-	*  @date	6/03/2014
-	*  @since	5.0.0
-	*
-	*  @param	$post_id (mixed) the $post_id from which the value was deleted
-	*  @param	$key (string) the $meta_key which the value was deleted
-	*  @return	n/a
-	*/
-
-	/*
-
-	function delete_value( $post_id, $key ) {
 
 
 
 	}
 
-	*/
-
-
-	/*
-	*  load_field()
-	*
-	*  This filter is applied to the $field after it is loaded from the database
-	*
-	*  @type	filter
-	*  @date	23/01/2013
-	*  @since	3.6.0
-	*
-	*  @param	$field (array) the field array holding all the field options
-	*  @return	$field
-	*/
-
-	/*
-
-	function load_field( $field ) {
-
-		return $field;
-
-	}
-
-	*/
-
-
-	/*
-	*  update_field()
-	*
-	*  This filter is applied to the $field before it is saved to the database
-	*
-	*  @type	filter
-	*  @date	23/01/2013
-	*  @since	3.6.0
-	*
-	*  @param	$field (array) the field array holding all the field options
-	*  @return	$field
-	*/
-
-	/*
-
-	function update_field( $field ) {
-
-		return $field;
-
-	}
-
-	*/
-
-
-	/*
-	*  delete_field()
-	*
-	*  This action is fired after a field is deleted from the database
-	*
-	*  @type	action
-	*  @date	11/02/2014
-	*  @since	5.0.0
-	*
-	*  @param	$field (array) the field array holding all the field options
-	*  @return	n/a
-	*/
-
-	/*
-
-	function delete_field( $field ) {
-
-
-
-	}
-
-	*/
 
 
 }
 
 if ( ! function_exists( 'get_heading' ) ) {
-    function get_heading($field, $cls="") {
+    function get_heading($field, $attrs="", $post_id = false) {
     	if (!$field) return "";
+
+      // if field is a string then fetch the field
+      if (is_string($field)) {
+        $field = get_field($field, $post_id);
+      }
+
+      // if attrs is a string then convert to array with class
+      if ($attrs && is_string($attrs)) {
+        $attrs = ["class" => $attrs];
+      }
+
     	$str = "<{$field['level']}";
-    	if ($cls) {
-    		$str .= " class='{$cls}'";
-    	}
+
+      // add attributes as string
+      if ($attrs) {
+        foreach ($attrs as $key => $value) {
+          $value = esc_attr($value);
+          $str .= " {$key}='{$value}'";
+        }
+      }
+
     	$str .= ">";
     	$str .= $field['text'];
     	$str .= "</{$field['level']}>";
@@ -610,19 +440,12 @@ if ( ! function_exists( 'get_heading' ) ) {
     }
 }
 
-// if ( ! function_exists( 'get_subfield_heading' ) ) {
-//     function get_subfield_heading($name, $cls="") {
-//     	$data = get_sub_field($name);
-//     	$str = "<{$data['level']}";
-//     	if ($cls) {
-//     		$str .= " class='{$cls}'";
-//     	}
-//     	$str .= ">";
-//     	$str .= $data['text'];
-//     	$str .= "</{$data['level']}>";
-//     	return $str;
-//     }
-// }
+if ( ! function_exists( 'get_sub_heading' ) ) {
+    function get_sub_heading($fieldname, $attrs="", $post_id = false) {
+    	$data = get_sub_field($fieldname, $post_id);
+    	return get_heading($data, $attrs);
+    }
+}
 
 // create field
 new acf_field_heading_field();
