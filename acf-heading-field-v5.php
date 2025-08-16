@@ -1,6 +1,47 @@
 <?php
 
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 class acf_field_heading_field extends acf_field {
+
+	/**
+	 * Field type name
+	 * @var string
+	 */
+	public $name;
+
+	/**
+	 * Field type label
+	 * @var string
+	 */
+	public $label;
+
+	/**
+	 * Field type category
+	 * @var string
+	 */
+	public $category;
+
+	/**
+	 * Field type defaults
+	 * @var array
+	 */
+	public $defaults;
+
+	/**
+	 * Field type settings
+	 * @var array
+	 */
+	public $settings;
+
+	/**
+	 * Field type l10n (localization) strings
+	 * @var array
+	 */
+	public $l10n;
 
 
 	/*
@@ -21,40 +62,32 @@ class acf_field_heading_field extends acf_field {
 		/*
 		*  name (string) Single word, no spaces. Underscores allowed
 		*/
-
 		$this->name = 'heading_field';
-
 
 		/*
 		*  label (string) Multiple words, can include spaces, visible when selecting a field type
 		*/
-
 		$this->label = __('Heading');
-
 
 		/*
 		*  category (string) basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
 		*/
-
 		$this->category = 'basic';
-
 
 		/*
 		*  defaults (array) Array of default settings which are merged into the field object. These are used later in settings
 		*/
-
 		$this->defaults = array();
-
 
 		/*
 		*  l10n (array) Array of strings that are used in JavaScript. This allows JS strings to be translated in PHP and loaded via:
 		*  var message = acf._e('FIELD_NAME', 'error');
 		*/
+		$this->l10n = array();
 
-		// $this->l10n = array(
-		// 	'error'	=> __('Error! Please enter a higher value', 'acf-smart-button'),
-		// );
-
+		/*
+		*  settings (array) Plugin settings
+		*/
 		$this->settings = array(
 			'path' => apply_filters('acf/helpers/get_path', __FILE__),
 			'dir' => apply_filters('acf/helpers/get_dir', __FILE__),
@@ -62,8 +95,7 @@ class acf_field_heading_field extends acf_field {
 		);
 
 		// do not delete!
-    	parent::__construct();
-
+		parent::__construct();
 	}
 
 
@@ -342,12 +374,21 @@ class acf_field_heading_field extends acf_field {
 		// if a text field is converted to a heading it may already
 		// contain a string value
 		if (!is_array($value)) {
-			$value = [
-				"text" => $value
-			];
+			$value = array(
+				'text' => (string) $value,
+				'level' => ''
+			);
 		}
+		
+		// Ensure required keys exist
+		if (!isset($value['text'])) {
+			$value['text'] = '';
+		}
+		if (!isset($value['level'])) {
+			$value['level'] = '';
+		}
+		
 		return $value;
-
 	}
 
 
@@ -357,13 +398,13 @@ class acf_field_heading_field extends acf_field {
 
 	function merge_default_level($field, $value) {
 		// always return a level so as not to break html
-		if( !isset($value['level']) || empty($value['level']) ) {
+		if (!isset($value['level']) || empty($value['level'])) {
 			// global default
-			$default_level = defined("DEFAULT_HEADING") ? DEFAULT_HEADING : "p";
+			$default_level = defined('DEFAULT_HEADING') ? DEFAULT_HEADING : 'p';
 
 			// field default
-			if (isset($field["heading-default-level"])) {
-				$default_level =  $field["heading-default-level"];
+			if (isset($field['heading-default-level']) && !empty($field['heading-default-level'])) {
+				$default_level = $field['heading-default-level'];
 			}
 
 			return $default_level;
@@ -391,18 +432,19 @@ class acf_field_heading_field extends acf_field {
 
 	function format_value( $value, $post_id, $field ) {
 
+		// Ensure value is an array
+		if (!is_array($value)) {
+			return '';
+		}
+
 		// if no text then return blank string (no tags)
-		if (!$value['text']) {
-			return "";
+		if (empty($value['text'])) {
+			return '';
 		}
 
 		$value['level'] = $this->merge_default_level($field, $value);
 
-    return $value;
-
-
-
-
+		return $value;
 	}
 
 
@@ -410,40 +452,73 @@ class acf_field_heading_field extends acf_field {
 }
 
 if ( ! function_exists( 'get_heading' ) ) {
-    function get_heading($field, $attrs="", $post_id = false) {
-    	if (!$field) return "";
+    function get_heading($field, $attrs = '', $post_id = false) {
+    	if (!$field) {
+    		return '';
+    	}
 
       // if field is a string then fetch the field
       if (is_string($field)) {
         $field = get_field($field, $post_id);
+        if (!$field) {
+        	return '';
+        }
+      }
+
+      // Ensure field is an array with required keys
+      if (!is_array($field) || empty($field['text'])) {
+      	return '';
+      }
+
+      // Ensure we have a level
+      if (empty($field['level'])) {
+      	$field['level'] = 'p';
       }
 
       // if attrs is a string then convert to array with class
       if ($attrs && is_string($attrs)) {
-        $attrs = ["class" => $attrs];
+        $attrs = array('class' => $attrs);
       }
 
-    	$str = "<{$field['level']}";
+      // Validate level is safe for HTML
+      $allowed_levels = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p');
+      if (!in_array($field['level'], $allowed_levels)) {
+      	$field['level'] = 'p';
+      }
+
+    	$str = '<' . esc_attr($field['level']);
 
       // add attributes as string
-      if ($attrs) {
+      if (is_array($attrs)) {
         foreach ($attrs as $key => $value) {
+          $key = esc_attr($key);
           $value = esc_attr($value);
           $str .= " {$key}='{$value}'";
         }
       }
 
-    	$str .= ">";
-    	$str .= $field['text'];
-    	$str .= "</{$field['level']}>";
+    	$str .= '>';
+    	
+    	// Allow basic formatting HTML tags
+    	$allowed_html = array(
+    		'b' => array(),
+    		'i' => array(),
+    		'strong' => array(),
+    		'em' => array(),
+    		'br' => array(),
+    		'span' => array(),
+    	);
+    	
+    	$str .= wp_kses($field['text'], $allowed_html);
+    	$str .= '</' . esc_attr($field['level']) . '>';
     	return $str;
     }
 }
 
 if ( ! function_exists( 'get_sub_heading' ) ) {
-    function get_sub_heading($fieldname, $attrs="", $post_id = false) {
+    function get_sub_heading($fieldname, $attrs = '', $post_id = false) {
     	$data = get_sub_field($fieldname, $post_id);
-    	return get_heading($data, $attrs);
+    	return get_heading($data, $attrs, $post_id);
     }
 }
 
