@@ -3,7 +3,7 @@
 	Plugin Name: Advanced Custom Fields: Heading Field
 	Plugin URI: https://github.com/boostmetrica/acf-heading-field
 	Description: A simple text field and heading level selector.
-	Version: 1.0.1
+	Version: 1.0.2
 	Author: boost.dev
 	Author URI: https://boost.dev
 	License: GPLv2 or later
