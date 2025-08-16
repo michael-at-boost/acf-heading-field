@@ -2,7 +2,7 @@
     "name": "boost-dev/acf-heading-field",
     "type": "wordpress-plugin",
     "description": "A simple text field and heading level selector for Advanced Custom Fields",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "authors": [
         {
             "name": "Michael James",
